@@ -1,5 +1,10 @@
 from flask_restx import Api
-from controllers.test_controller import test_controller
+from controllers.damage_controller import damage_controller
+from controllers.trigger_controller import trigger_event_controller
+from controllers.risk_controller import risk_controller
+from controllers.mesure_controller import mesure_controller
+from controllers.support_actif_controller import support_actif_controller
+from controllers.pimary_actif_controller import primary_actif_controller
 from flask import Blueprint
 
 
@@ -13,4 +18,11 @@ api = Api(api_v1,
           #   security='Bearer'
           )
 
-api.add_namespace(test_controller)
+api.add_namespace(risk_controller)
+api.add_namespace(damage_controller)
+api.add_namespace(trigger_event_controller)
+api.add_namespace(mesure_controller)
+api.add_namespace(support_actif_controller)
+api.add_namespace(primary_actif_controller)
+
+
