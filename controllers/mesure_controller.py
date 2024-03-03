@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 from services.mesure_service import MesureService
@@ -29,6 +30,7 @@ class MesureResource(Resource):
     @mesure_controller.marshal_list_with(mesure_model, code=200, description="Success")
     @mesure_controller.response(200, "{'message': 'success ")
     @mesure_controller.response(404, "{'message': 'not found ")
+    @jwt_required()
     def get(self):
         """
         Get all mesures.

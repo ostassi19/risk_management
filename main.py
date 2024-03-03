@@ -3,13 +3,19 @@ from swagger_api import api_v1  # Import the Blueprint from your swagger module
 from config import Config
 from models import db
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
+from flask_bcrypt import Bcrypt
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
+jwt = JWTManager()
+bcrypt= Bcrypt()
 
 # Initialize SQLAlchemy with the Flask app
 db.init_app(app)
-
+jwt.init_app(app)
+bcrypt.init_app(app)
 # Initialize Flask-Migrate
 migrate = Migrate(app, db)
 
