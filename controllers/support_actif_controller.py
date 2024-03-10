@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 from services.support_actif_service import SupportActifService
@@ -16,10 +17,11 @@ support_actif_model = support_actif_controller.model('alaamani', {
 
 @support_actif_controller.route('/')
 @support_actif_controller.response(500, 'Internal server error')
-class AlaAmaniResource(Resource):
+class SupportActifResource(Resource):
     @support_actif_controller.marshal_with(support_actif_model, description="Support Actif created successfully")
     @support_actif_controller.expect(support_actif_model)
     @support_actif_controller.response(201, "{'message': 'Support Actif registered}")
+    @jwt_required()
     def post(self):
         """
         Create a new Support Actif.
@@ -30,6 +32,7 @@ class AlaAmaniResource(Resource):
     @support_actif_controller.marshal_list_with(support_actif_model, code=200, description="Success")
     @support_actif_controller.response(200, "{'message': 'success}")
     @support_actif_controller.response(404, "{'message': 'not found}")
+    @jwt_required()
     def get(self):
         """
         Get all Support Actifs.

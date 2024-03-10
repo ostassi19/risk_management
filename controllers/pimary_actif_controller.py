@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 from services.primary_actif_service import PrimaryActifService
@@ -20,6 +21,7 @@ class PrimaryActifResource(Resource):
     @primary_actif_controller.marshal_with(primary_actif_model, description="Primary Actif created successfully")
     @primary_actif_controller.expect(primary_actif_model)
     @primary_actif_controller.response(201, "{'message': 'Primary Actif registered}")
+    @jwt_required()
     def post(self):
         """
         Create a new Primary Actif.
@@ -30,6 +32,7 @@ class PrimaryActifResource(Resource):
     @primary_actif_controller.marshal_list_with(primary_actif_model, code=200, description="Success")
     @primary_actif_controller.response(200, "{'message': 'success}")
     @primary_actif_controller.response(404, "{'message': 'not found}")
+    @jwt_required()
     def get(self):
         """
         Get all Primary Actifs.
@@ -43,6 +46,7 @@ class PrimaryActifDetailResource(Resource):
     @primary_actif_controller.marshal_with(primary_actif_model, description="get Primary Actif by id")
     @primary_actif_controller.response(200, 'success')
     @primary_actif_controller.response(404, "Primary Actif not found")
+    @jwt_required()
     def get(self, primary_actif_id):
         """
         Get details of a specific Primary Actif.
@@ -56,6 +60,7 @@ class PrimaryActifDetailResource(Resource):
     @primary_actif_controller.response(404, "Primary Actif not found")
     @primary_actif_controller.response(200, 'success')
     @primary_actif_controller.expect(primary_actif_model)
+    @jwt_required()
     def put(self, primary_actif_id):
         """
         Update details of a specific Primary Actif.
@@ -68,6 +73,7 @@ class PrimaryActifDetailResource(Resource):
 
     @primary_actif_controller.marshal_with(primary_actif_model, code=200, description="Success")
     @primary_actif_controller.response(404, "Primary Actif not found")
+    @jwt_required()
     def delete(self, primary_actif_id):
         """
         Delete a specific Primary Actif.

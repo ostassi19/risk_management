@@ -20,6 +20,7 @@ class MesureResource(Resource):
     @mesure_controller.marshal_with(mesure_model, description="Mesure created successfully")
     @mesure_controller.expect(mesure_model)
     @mesure_controller.response(201, "{'message': 'mesure registered ")
+    @jwt_required()
     def post(self):
         """
         Create a new mesure.
@@ -44,6 +45,7 @@ class MesureDetailResource(Resource):
     @mesure_controller.marshal_with(mesure_model, description="get mesure by id")
     @mesure_controller.response(200, 'success')
     @mesure_controller.response(404, "Mesure not found")
+    @jwt_required()
     def get(self, mesure_id):
         """
         Get details of a specific mesure.
@@ -57,6 +59,7 @@ class MesureDetailResource(Resource):
     @mesure_controller.response(404, "Mesure not found")
     @mesure_controller.response(200, 'success')
     @mesure_controller.expect(mesure_model)
+    @jwt_required()
     def put(self, mesure_id):
         """
         Update details of a specific mesure.
@@ -69,6 +72,7 @@ class MesureDetailResource(Resource):
 
     @mesure_controller.marshal_with(mesure_model, code=200, description="Success")
     @mesure_controller.response(404, "Mesure not found")
+    @jwt_required()
     def delete(self, mesure_id):
         """
         Delete a specific mesure.

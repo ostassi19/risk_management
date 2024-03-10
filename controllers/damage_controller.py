@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from services.damage_service import DamageService
@@ -20,6 +21,7 @@ class DamageResource(Resource):
     @damage_controller.marshal_with(damage_model, description="Damage created successfully")
     @damage_controller.expect(damage_model)
     @damage_controller.response(201, "{'message': 'damage registered ")
+    @jwt_required()
     def post(self):
         """
         Create a new damage.
@@ -30,6 +32,7 @@ class DamageResource(Resource):
     @damage_controller.marshal_list_with(damage_model, code=200, description="Success")
     @damage_controller.response(200, "{'message': 'success ")
     @damage_controller.response(404, "{'message': 'not found ")
+    @jwt_required()
     def get(self):
         """
         Get all damages.
@@ -43,6 +46,7 @@ class DamageDetailResource(Resource):
     @damage_controller.marshal_with(damage_model, description="get damage by id")
     @damage_controller.response(200, 'success')
     @damage_controller.response(404, "Damage not found")
+    @jwt_required()
     def get(self, damage_id):
         """
         Get details of a specific damage.
@@ -56,6 +60,7 @@ class DamageDetailResource(Resource):
     @damage_controller.response(404, "Damage not found")
     @damage_controller.response(200, 'success')
     @damage_controller.expect(damage_model)
+    @jwt_required()
     def put(self, damage_id):
         """
         Update details of a specific damage.
@@ -68,6 +73,7 @@ class DamageDetailResource(Resource):
 
     @damage_controller.marshal_with(damage_model, code=200, description="Success")
     @damage_controller.response(404, "Damage not found")
+    @jwt_required()
     def delete(self, damage_id):
         """
         Delete a specific damage.

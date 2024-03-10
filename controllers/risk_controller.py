@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 from services.risk_service import RiskService
@@ -31,6 +32,7 @@ class RiskResource(Resource):
     @risk_controller.marshal_with(risk_model, description="Risk created successfully")
     @risk_controller.expect(risk_model)
     @risk_controller.response(201, "{'message': 'Risk registered}")
+    @jwt_required()
     def post(self):
         """
         Create a new Risk.
@@ -41,6 +43,7 @@ class RiskResource(Resource):
     @risk_controller.marshal_list_with(risk_model, code=200, description="Success")
     @risk_controller.response(200, "{'message': 'success}")
     @risk_controller.response(404, "{'message': 'not found}")
+    @jwt_required()
     def get(self):
         """
         Get all Risks.
@@ -54,6 +57,7 @@ class RiskDetailResource(Resource):
     @risk_controller.marshal_with(risk_model, description="get Risk by id")
     @risk_controller.response(200, 'success')
     @risk_controller.response(404, "Risk not found")
+    @jwt_required()
     def get(self, risk_id):
         """
         Get details of a specific Risk.
@@ -67,6 +71,7 @@ class RiskDetailResource(Resource):
     @risk_controller.response(404, "Risk not found")
     @risk_controller.response(200, 'success')
     @risk_controller.expect(risk_model)
+    @jwt_required()
     def put(self, risk_id):
         """
         Update details of a specific Risk.
@@ -79,6 +84,7 @@ class RiskDetailResource(Resource):
 
     @risk_controller.marshal_with(risk_model, code=200, description="Success")
     @risk_controller.response(404, "Risk not found")
+    @jwt_required()
     def delete(self, risk_id):
         """
         Delete a specific Risk.
