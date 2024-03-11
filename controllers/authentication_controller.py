@@ -16,19 +16,26 @@ LOGIN_SUCCESS = auth_controller.model('Login_success', {
     'username': fields.String(required=True, description='username'),
     'last_use': fields.String(required=True, description='last use'),
 })
+REGISTER = auth_controller.model('Register', {
+    'first_name': fields.String(required=True, default='test', description='The user password'),
+    'last_name': fields.String(required=True, default='test', description='The user password'),
+    'mail': fields.String(required=True, default='test', description='The user password'),
+    'phone': fields.String(required=True, default='test', description='The user password'),
+    'address': fields.String(required=True, default='test', description='The user password'),
+    'role': fields.String(required=True, default='test', description='The user password'),
+    'username': fields.String(required=True, default='test@test.com', description='The user identifier'),
+    'password': fields.String(required=True, default='test', description='The user password'),
 
+})
 
 @auth_controller.route('/register')
 @auth_controller.response(400, 'Bad Request')
 @auth_controller.response(201, 'User registered successfully')
 class RegisterResource(Resource):
-    @auth_controller.expect(LOGIN)
+    @auth_controller.expect(REGISTER)
     def post(self):
-        data = request.json
-        username = data.get('username')
-        password = data.get('password')
-
-        registration_result = AuthService.register_user(username, password)
+        user_data = request.json
+        registration_result = AuthService.register_user(user_data)
         return registration_result
 
 

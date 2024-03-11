@@ -1,4 +1,6 @@
-from . import db
+from . import db,user_risk_association
+
+
 
 class Risk(db.Model):
     __tablename__ = 'risk'
@@ -11,7 +13,7 @@ class Risk(db.Model):
     residual_potential = db.Column(db.Integer, nullable=True)
     personalized_residual_potential = db.Column(db.Integer, nullable=True)
     residual_impact = db.Column(db.Integer, nullable=True)
-    decision = db.Column(db.String(255), nullable=True)
+    comment = db.Column(db.Text, nullable=True)
     residual_gravity = db.Column(db.Integer, nullable=True)
 
     mesure_id = db.Column(db.Integer, db.ForeignKey('mesure.id'), nullable=True)
@@ -24,10 +26,15 @@ class Risk(db.Model):
 
     trigger_event_id = db.Column(db.Integer, db.ForeignKey('trigger_event.id'), nullable=True)
 
+    decision_id = db.Column(db.Integer, db.ForeignKey('decision.id'), nullable=True)
+
+    users = db.relationship('User', secondary=user_risk_association, backref='users')
+
+
     def __init__(self, consequence_type, intrinsic_impact, personalized_intrinsic_impact,
                  intrinsic_gravity, intrinsic_potential, residual_potential,
-                 personalized_residual_potential, residual_impact, decision, residual_gravity,
-                 damage_id,mesure_id,support_actif_id,trigger_event_id):
+                 personalized_residual_potential, residual_impact, comment, residual_gravity,
+                 damage_id,mesure_id,support_actif_id,trigger_event_id,decision_id):
         self.consequence_type = consequence_type
         self.intrinsic_impact = intrinsic_impact
         self.personalized_intrinsic_impact = personalized_intrinsic_impact
@@ -36,12 +43,13 @@ class Risk(db.Model):
         self.residual_potential = residual_potential
         self.personalized_residual_potential = personalized_residual_potential
         self.residual_impact = residual_impact
-        self.decision = decision
+        self.comment = comment
         self.residual_gravity = residual_gravity
         self.damage_id = damage_id
         self.mesure_id = mesure_id
         self.support_actif_id = support_actif_id
         self.trigger_event_id = trigger_event_id
+        self.decision_id = decision_id
 
     def serialize(self):
         return {
@@ -54,7 +62,7 @@ class Risk(db.Model):
             'residual_potential': self.residual_potential,
             'personalized_residual_potential': self.personalized_residual_potential,
             'residual_impact': self.residual_impact,
-            'decision': self.decision,
+            'comment': self.comment,
             'residual_gravity': self.residual_gravity,
             'mesures': [mesure.serialize() for mesure in self.mesures]
         }

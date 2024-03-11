@@ -4,20 +4,21 @@ from . import db
 class Mesure(db.Model):
     __tablename__ = 'mesure'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    level = db.Column(db.Text, nullable=True)
     measure = db.Column(db.Text, nullable=True)
     # One-to-Many relationship with Mesure
     risks = db.relationship('Risk', backref='mesures', lazy=True)
 
-    def __init__(self, level=None, measure=None):
-        self.level = level
+    mesure_level_id = db.Column(db.Integer, db.ForeignKey('mesure_level.id'), nullable=True)
+
+
+    def __init__(self, measure=None,mesure_level_id= None):
         self.measure = measure
+        self.mesure_level_id = mesure_level_id
 
     def serialize(self):
         return {
             'id': self.id,
             'measure': self.measure,
-            'level': self.level,
         }
 
 class Deterrent(Mesure):

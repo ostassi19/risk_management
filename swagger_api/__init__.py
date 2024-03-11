@@ -1,5 +1,9 @@
 from flask_restx import Api
+
+from controllers.company_controller import company_controller
 from controllers.damage_controller import damage_controller
+from controllers.decision_controller import decision_controller
+from controllers.mesure_level_controller import mesure_level_controller
 from controllers.trigger_controller import trigger_event_controller
 from controllers.risk_controller import risk_controller
 from controllers.mesure_controller import mesure_controller
@@ -28,5 +32,8 @@ api.add_namespace(mesure_controller)
 api.add_namespace(support_actif_controller)
 api.add_namespace(primary_actif_controller)
 api.add_namespace(auth_controller)
+api.add_namespace(mesure_level_controller)
+api.add_namespace(decision_controller)
+api.add_namespace(company_controller)
 
 

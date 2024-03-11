@@ -2,11 +2,15 @@ from flask import request, jsonify
 from flask_jwt_extended import create_access_token, unset_jwt_cookies
 
 from models.user import User, db, hash_password, check_password
+from datetime import datetime
+
 
 
 class AuthService:
     @staticmethod
-    def register_user(username, password):
+    def register_user(user_data):
+        username = user_data['username']
+        password = user_data['password']
         if not username or not password:
             return {'message': 'Username and password are required'}, 400
 
@@ -14,7 +18,17 @@ class AuthService:
         if existing_user:
             return {'message': 'Username already exists'}, 400
 
-        new_user = User(username=username, password=hash_password(password))
+        new_user = User(
+            first_name=user_data["first_name"],
+            last_name=user_data["last_name"],
+            mail=user_data["mail"],
+            phone=user_data["phone"],
+            address=user_data["address"],
+            username=user_data["username"],
+            password=hash_password(user_data["password"]),
+            last_use = datetime.now(),
+            role=user_data["role"],
+        )
         db.session.add(new_user)
         db.session.commit()
 

@@ -1,15 +1,45 @@
-from . import db
+from enum import Enum
+from . import db,user_risk_association
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_security import UserMixin
 
+class UserRoleEnum(Enum):
+    MANAGER = 'Risk Manager'
+    OWNER = 'Risk Owner'
+    RSSI = 'rssi'
 
 class User(db.Model,UserMixin):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(50), unique=True, nullable=True)
+    last_name = db.Column(db.String(50), unique=True, nullable=True)
+    mail = db.Column(db.String(255), unique=True, nullable=True)
+    phone = db.Column(db.String(255), unique=True, nullable=True)
+    address = db.Column(db.String(255), unique=True, nullable=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
     last_use = db.Column(db.Date, nullable=True)
+    role = db.Column(db.Enum(UserRoleEnum))
+
+    # Define the relationship to Company
+    companies = db.relationship('Company', backref='user', lazy=True)
+
+    risks = db.relationship('Risk', secondary=user_risk_association, backref='assigned_risks')
+
+
+    def __init__(self, first_name, last_name, mail, phone, address, username, password, last_use, role):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.mail = mail
+        self.phone = phone
+        self.address = address
+        self.username = username
+        self.password = password
+        self.last_use = last_use
+        self.role = role
+
+
 
 
 def hash_password(password):

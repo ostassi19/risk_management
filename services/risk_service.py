@@ -1,28 +1,31 @@
 from models.risk import Risk, db
 from flask import make_response, jsonify
 
+from utils.calcul import calcul_gravity
+
+
 class RiskService:
 
     @classmethod
     def create_risk(cls, risk_data):
         try:
+            gravity_intrinsic = calcul_gravity(risk_data["intrinsic_impact"], risk_data["intrinsic_potential"]) if risk_data["intrinsic_impact"] and risk_data["intrinsic_potential"] else None
+            gravity_residual = calcul_gravity(risk_data["residual_impact"], risk_data["residual_potential"]) if risk_data["intrinsic_impact"] and risk_data["intrinsic_potential"] else None
+
             risk = Risk(
                 consequence_type=risk_data["consequence_type"],
                 intrinsic_impact=risk_data["intrinsic_impact"],
                 personalized_intrinsic_impact=risk_data["personalized_intrinsic_impact"],
-                intrinsic_gravity=risk_data["intrinsic_gravity"],
+                intrinsic_gravity=gravity_intrinsic,
                 intrinsic_potential=risk_data["intrinsic_potential"],
                 residual_potential=risk_data["residual_potential"],
                 personalized_residual_potential=risk_data["personalized_residual_potential"],
                 residual_impact=risk_data["residual_impact"],
-                decision=risk_data["decision"],
-                residual_gravity=risk_data["residual_gravity"],
+                residual_gravity=gravity_residual,
                 damage_id=risk_data["damage_id"],
                 mesure_id=risk_data["mesure_id"],
                 support_actif_id=risk_data["support_actif_id"],
                 trigger_event_id=risk_data["trigger_event_id"],
-
-
             )
             db.session.add(risk)
             db.session.commit()

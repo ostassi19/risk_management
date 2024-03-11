@@ -12,12 +12,12 @@ class TriggerEvent(db.Model):
     decision_natural_exposure = db.Column(db.Integer, nullable=True)
     result_natural_exposure = db.Column(db.Integer, nullable=True)
     comment = db.Column(db.Text, nullable=True)
-    selected = db.Column(db.Boolean, nullable=True)
+    selection = db.Column(db.Boolean, nullable=True)
 
     risks = db.relationship('Risk', backref='trigger_event', lazy=True)
 
     def __init__(self, code_type, type, code, event, standard_natural_exposure, decision_natural_exposure,
-                 result_natural_exposure, comment, selected):
+                 result_natural_exposure, comment, selection):
         self.code_type = code_type
         self.type = type
         self.code = code
@@ -26,7 +26,7 @@ class TriggerEvent(db.Model):
         self.decision_natural_exposure = decision_natural_exposure
         self.result_natural_exposure = result_natural_exposure
         self.comment = comment
-        self.selected = selected
+        self.selection = selection
 
     def serialize(self):
         return {
@@ -39,5 +39,5 @@ class TriggerEvent(db.Model):
             'decision_natural_exposure': self.decision_natural_exposure,
             'result_natural_exposure': self.result_natural_exposure,
             'comment': self.comment,
-            'selected': self.selected
+            'selection': self.selection
         }
