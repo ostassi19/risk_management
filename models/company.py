@@ -8,7 +8,3 @@ class Company(db.Model):
     company_address = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
-    def __init__(self, company_name, company_address,user_id):
-        self.company_name = company_name
-        self.company_address = company_address
-        self.user_id = user_id

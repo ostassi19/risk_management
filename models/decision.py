@@ -9,5 +9,3 @@ class Decision(db.Model):
     # One-to-Many relationship with PrimaryActif
     risks = db.relationship('Risk', backref='decision', lazy=True)
 
-    def __int__(self, decision_result):
-        self.decision_result = decision_result

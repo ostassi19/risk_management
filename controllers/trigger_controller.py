@@ -15,7 +15,7 @@ trigger_event_model = trigger_event_controller.model('trigger_event', {
     "decision_natural_exposure": fields.Integer(description="decision natural exposure"),
     "result_natural_exposure": fields.Integer(description="result natural exposure"),
     "comment": fields.String(description="comment"),
-    "selected": fields.Boolean(description="selected"),
+
 })
 
 @trigger_event_controller.route('/')

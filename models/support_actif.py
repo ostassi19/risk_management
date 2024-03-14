@@ -10,9 +10,3 @@ class SupportActif(db.Model):
 
     # One-to-Many relationship with SupportActif
     risks = db.relationship('Risk', backref='support_actif', lazy=True)
-
-    def __init__(self, name, type, element, selection):
-        self.name = name
-        self.type = type
-        self.element = element
-        self.selection = selection

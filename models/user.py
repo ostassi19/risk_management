@@ -25,21 +25,7 @@ class User(db.Model,UserMixin):
     # Define the relationship to Company
     companies = db.relationship('Company', backref='user', lazy=True)
 
-    risks = db.relationship('Risk', secondary=user_risk_association, backref='assigned_risks')
-
-
-    def __init__(self, first_name, last_name, mail, phone, address, username, password, last_use, role):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.mail = mail
-        self.phone = phone
-        self.address = address
-        self.username = username
-        self.password = password
-        self.last_use = last_use
-        self.role = role
-
-
+    risks = db.relationship('Risk', secondary=user_risk_association, back_populates='users')
 
 
 def hash_password(password):

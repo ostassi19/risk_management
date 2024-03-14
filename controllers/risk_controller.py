@@ -1,6 +1,7 @@
 from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
+
 from services.risk_service import RiskService
 
 risk_controller = Namespace('risk', description='Risk entity')
@@ -16,15 +17,17 @@ risk_model = risk_controller.model('risk', {
     "residual_potential": fields.Integer(description="residual potential"),
     "personalized_residual_potential": fields.Integer(description="personalized residual potential"),
     "residual_impact": fields.Integer(description="residual impact"),
-    "decision": fields.String(description="decision"),
+    "comment": fields.String(description="comment"),
     "residual_gravity": fields.Integer(description="residual gravity"),
-    "mesure_id": fields.Integer(description="mesure id"),
+    "mesure_id": fields.Integer(default=None,description="mesure id" ),
+    "support_actif_id": fields.Integer(description="support_actif id"),
     "damage_id": fields.Integer(description="damage id"),
     "primary_actif_id": fields.Integer(description="primary_actif id"),
-    "support_actif_id": fields.Integer(description="support_actif id"),
     "trigger_event_id": fields.Integer(description="trigger_event id"),
+    "decision_id": fields.Integer(description="decision id"),
 
 })
+
 
 @risk_controller.route('/')
 @risk_controller.response(500, 'Internal server error')
@@ -32,13 +35,13 @@ class RiskResource(Resource):
     @risk_controller.marshal_with(risk_model, description="Risk created successfully")
     @risk_controller.expect(risk_model)
     @risk_controller.response(201, "{'message': 'Risk registered}")
-    @jwt_required()
+    #@jwt_required()
     def post(self):
         """
         Create a new Risk.
         """
         risk_data = request.json
-        return RiskService.create_risk(risk_data), 201
+        return RiskService.create_new_risk(risk_data), 201
 
     @risk_controller.marshal_list_with(risk_model, code=200, description="Success")
     @risk_controller.response(200, "{'message': 'success}")
@@ -49,6 +52,7 @@ class RiskResource(Resource):
         Get all Risks.
         """
         return RiskService.get_all_risks()
+
 
 @risk_controller.route('/<int:risk_id>')
 @risk_controller.param('risk_id', 'the Risk identifier')
@@ -71,7 +75,7 @@ class RiskDetailResource(Resource):
     @risk_controller.response(404, "Risk not found")
     @risk_controller.response(200, 'success')
     @risk_controller.expect(risk_model)
-    @jwt_required()
+    #@jwt_required()
     def put(self, risk_id):
         """
         Update details of a specific Risk.

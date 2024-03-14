@@ -1,6 +1,8 @@
 from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
+
+from controllers.mesure_level_controller import mesure_level_model
 from services.mesure_service import MesureService
 
 mesure_controller = Namespace('mesure', description='Mesure entity')
@@ -8,9 +10,9 @@ mesure_controller = Namespace('mesure', description='Mesure entity')
 # Adjust the model fields based on the updated Mesure entity
 mesure_model = mesure_controller.model('mesure', {
     "id": fields.Integer(readonly=True, description="identifier"),
-    "level": fields.String(required=True, description="level"),
     "measure": fields.String(required=True, description="measure"),
     "type": fields.String(required=True, description="mesure type"),
+    #"level": fields.Nested(mesure_level_model,required=False)
     # Add fields specific to each mesure type as needed
 })
 

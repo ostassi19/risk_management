@@ -7,14 +7,14 @@ from services.authentication_service import AuthService
 auth_controller = Namespace('auth', description='Authentication')
 
 LOGIN = auth_controller.model('Login', {
-    'username': fields.String(required=True, default='test@test.com', description='The user identifier'),
-    'password': fields.String(required=True, default='test', description='The user password')
+    'username': fields.String(required=True, description='The user identifier'),
+    'password': fields.String(required=True, description='The user password')
 })
 
 LOGIN_SUCCESS = auth_controller.model('Login_success', {
     '_id': fields.String(required=True, description='username'),
-    'username': fields.String(required=True, description='username'),
-    'last_use': fields.String(required=True, description='last use'),
+    'username': fields.String(required=True, default='test', description='username'),
+    'last_use': fields.String(required=True, default='test', description='last use'),
 })
 REGISTER = auth_controller.model('Register', {
     'first_name': fields.String(required=True, default='test', description='The user password'),
