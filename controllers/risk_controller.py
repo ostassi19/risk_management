@@ -83,7 +83,8 @@ class RiskResource(Resource):
 @risk_controller.param('risk_id', 'the Risk identifier')
 @risk_controller.response(500, 'Internal server error')
 class RiskDetailResource(Resource):
-    @risk_controller.marshal_with(risk_model, description="get Risk by id")
+    @risk_controller.marshal_with(expected_risk_model, description="get Risk by id")
+    @risk_controller.expect(risk_model)
     @risk_controller.response(200, 'success')
     @risk_controller.response(404, "Risk not found")
     @jwt_required()
@@ -96,7 +97,7 @@ class RiskDetailResource(Resource):
             return risk
         return {"message": "Risk not found"}, 404
 
-    @risk_controller.marshal_with(risk_model, description="update Risk")
+    @risk_controller.marshal_with(expected_risk_model, description="update Risk")
     @risk_controller.response(404, "Risk not found")
     @risk_controller.response(200, 'success')
     @risk_controller.expect(risk_model)
