@@ -2,12 +2,16 @@ from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 
+from controllers.damage_controller import damage_model
+from controllers.decision_controller import decision_model
+from controllers.pimary_actif_controller import primary_actif_model
+from controllers.support_actif_controller import support_actif_model
+from controllers.trigger_controller import trigger_event_model
 from services.risk_service import RiskService
 
 risk_controller = Namespace('risk', description='Risk entity')
 
-# Define the model for Risk
-risk_model = risk_controller.model('risk', {
+risk_model = risk_controller.model('riskk', {
     "id": fields.Integer(readonly=True, description="identifier"),
     "consequence_type": fields.String(description="consequence type"),
     "intrinsic_impact": fields.Integer(description="intrinsic impact"),
@@ -28,11 +32,32 @@ risk_model = risk_controller.model('risk', {
 
 })
 
+expected_risk_model = risk_controller.model('risk', {
+    "id": fields.Integer(readonly=True, description="identifier"),
+    "consequence_type": fields.String(description="consequence type"),
+    "intrinsic_impact": fields.Integer(description="intrinsic impact"),
+    "personalized_intrinsic_impact": fields.Integer(description="personalized intrinsic impact"),
+    "intrinsic_gravity": fields.Integer(description="intrinsic gravity"),
+    "intrinsic_potential": fields.Integer(description="intrinsic potential"),
+    "residual_potential": fields.Integer(description="residual potential"),
+    "personalized_residual_potential": fields.Integer(description="personalized residual potential"),
+    "residual_impact": fields.Integer(description="residual impact"),
+    "comment": fields.String(description="comment"),
+    "residual_gravity": fields.Integer(description="residual gravity"),
+
+    "decision": fields.Nested(decision_model),
+    "trigger_event": fields.Nested(trigger_event_model),
+    "support_actif": fields.Nested(support_actif_model),
+    "damage": fields.Nested(damage_model),
+    "primary_actif": fields.Nested(primary_actif_model),
+
+})
+
 
 @risk_controller.route('/')
 @risk_controller.response(500, 'Internal server error')
 class RiskResource(Resource):
-    @risk_controller.marshal_with(risk_model, description="Risk created successfully")
+    @risk_controller.marshal_with(expected_risk_model, description="Risk created successfully")
     @risk_controller.expect(risk_model)
     @risk_controller.response(201, "{'message': 'Risk registered}")
     #@jwt_required()
@@ -43,7 +68,7 @@ class RiskResource(Resource):
         risk_data = request.json
         return RiskService.create_new_risk(risk_data), 201
 
-    @risk_controller.marshal_list_with(risk_model, code=200, description="Success")
+    @risk_controller.marshal_list_with(expected_risk_model, code=200, description="Success")
     @risk_controller.response(200, "{'message': 'success}")
     @risk_controller.response(404, "{'message': 'not found}")
     @jwt_required()

@@ -27,7 +27,7 @@ class DecisionResource(Resource):
     @decision_controller.marshal_list_with(decision_model, code=200, description="Success")
     @decision_controller.response(200, "{'message': 'success ")
     @decision_controller.response(404, "{'message': 'not found ")
-    @jwt_required()
+    #@jwt_required()
     def get(self):
         """
         Get all decisions.
@@ -41,7 +41,7 @@ class DecisionDetailResource(Resource):
     @decision_controller.marshal_with(decision_model, description="get decision by id")
     @decision_controller.response(200, 'success')
     @decision_controller.response(404, "Decision not found")
-    @jwt_required()
+    #@jwt_required()
     def get(self, decision_id):
         """
         Get details of a specific decision.

@@ -36,6 +36,7 @@ class RiskService:
             )
             print("shet")
             db.session.add(risk)
+            print("dddd")
             db.session.commit()
             if risk_data["trigger_event_id"]:
                 trigger_event= TriggerEventService.get_trigger_event_by_id(risk_data["trigger_event_id"])
@@ -51,7 +52,6 @@ class RiskService:
                 damage= DamageService.get_damage_by_id(risk_data["damage_id"])
                 setattr(damage[0], "selection", True)
                 db.session.commit()
-
             return risk, 201
 
         except Exception as e:
@@ -62,8 +62,6 @@ class RiskService:
     def get_all_risks(cls):
         try:
             risks = Risk.query.all()
-            risk = Risk(consequence_type="A")
-            print("zzzzz",risk)
             return risks, 200
         except Exception as e:
             return make_response(jsonify({'message': 'Error getting Risks'}), 500)

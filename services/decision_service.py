@@ -31,7 +31,7 @@ class DecisionService:
     @classmethod
     def get_decision_by_id(cls, decision_id):
         try:
-            decision = Decision.query.filter_by(decision_id).first()
+            decision = Decision.query.filter_by(id=decision_id).first()
             if not decision:
                 return jsonify({'error': 'decision not found'})
             else:
