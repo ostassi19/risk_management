@@ -6,7 +6,7 @@ from controllers.decision_controller import decision_controller
 from controllers.mesure_level_controller import mesure_level_controller
 from controllers.trigger_controller import trigger_event_controller
 from controllers.risk_controller import risk_controller
-from controllers.mesure_controller import mesure_controller
+from controllers.mesure_controller import measure_controller
 from controllers.support_actif_controller import support_actif_controller
 from controllers.pimary_actif_controller import primary_actif_controller
 from controllers.authentication_controller import auth_controller
@@ -28,7 +28,7 @@ api = Api(api_v1,
 api.add_namespace(risk_controller)
 api.add_namespace(damage_controller)
 api.add_namespace(trigger_event_controller)
-api.add_namespace(mesure_controller)
+api.add_namespace(measure_controller)
 api.add_namespace(support_actif_controller)
 api.add_namespace(primary_actif_controller)
 api.add_namespace(auth_controller)

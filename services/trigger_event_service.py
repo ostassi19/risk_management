@@ -11,7 +11,6 @@ class TriggerEventService:
             else:
                 result_natural_exposure = trigger_event_data["standard_natural_exposure"]
 
-            print("result_natural_exposure ",result_natural_exposure)
             trigger_event = TriggerEvent(
                 code_type=trigger_event_data["code_type"],
                 type=trigger_event_data["type"],
@@ -51,7 +50,6 @@ class TriggerEventService:
     def update_trigger_event(cls, trigger_event_id, trigger_event_data):
         try:
             trigger_event = TriggerEvent.query.filter_by(id=trigger_event_id).first()
-            print("ps",trigger_event)
             if trigger_event_data["decision_natural_exposure"]:
                 result_natural_exposure = trigger_event_data["decision_natural_exposure"]
             else:

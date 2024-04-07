@@ -1,6 +1,6 @@
 INSERT INTO `damage` (`id`, `security_impact`, `consequence_type`, `name`, `damage_type`, `comment`, `selection`) VALUES
-(1, 'Disponibilité', 'Indisponibilité', 'Inac', 'Inaccessibilité', 'L\'élément est introuvable : absence d\'adresse, adresse fausse ou service assurant l\'adressage indisponible', NULL),
-(2, 'Disponibilité', 'Indisponibilité', 'Disp', 'Disparition', 'L\'élément est absent là où on le cherche (et pour un prestataire, il n\'est plus opérationnel)', NULL),
+(1, 'Disponibilité', 'Indisponibilité', 'Inac', 'Inaccessibilité', 'L\'élément est introuvable : absence d\'adresse, adresse fausse ou service assurant l\'adressage indisponible', 1),
+(2, 'Disponibilité', 'Indisponibilité', 'Disp', 'Disparition', 'L\'élément est absent là où on le cherche (et pour un prestataire, il n\'est plus opérationnel)', 1),
 (3, 'Disponibilité', 'Indisponibilité', 'Endp', 'Endommagement physique', 'Endommagement physique (détecté) rendant l\'élément matériel non fonctionnel', NULL),
 (4, 'Disponibilité', 'Indisponibilité', 'Endl', 'Endommagement logique', 'Endommagement logique(détecté) rendant l\'élément non fonctionnel (programmes non fonctionnels, données incohérentes)', NULL),
 (5, 'Disponibilité', 'Indisponibilité', 'Inop', 'Inopérabilité', 'L\'élément reste, en lui même, fonctionnel mais ne peut être mis en opération pour des raisons exogènes (absence de personnel, de service indispensable au fonctionnement, etc.)', NULL),
@@ -11,6 +11,9 @@ INSERT INTO `damage` (`id`, `security_impact`, `consequence_type`, `name`, `dama
 (10, 'Intégrité', 'Défaut d\'intégrité', 'Crfx', 'Création de faux', 'Un élément nouveau et illégitime a été émis', NULL),
 (11, 'Confidentialité', 'Divulgation', 'Dive', 'Divulgation de données', 'Tout ou partie de l\'ensemble de données a été dupliqué, téléchargé, diffusé ou volé', NULL),
 (12, 'Efficience des processus', 'Inapplication de procédures adaptées', 'Napp', 'Non application de la procédure adaptée', 'Les procédures adéquates n\'ont pas été suivies par le personnel (par ignorance ou volontairement)', NULL);
+
+-- --------------------------------------------------------
+
 
 INSERT INTO `decision` (`id`, `decision_result`) VALUES
 (1, 'Accepter le risque'),
@@ -23,12 +26,25 @@ INSERT INTO `decision` (`id`, `decision_result`) VALUES
 -- --------------------------------------------------------
 
 
-INSERT INTO `mesure_level` (`id`, `level`, `description`, `definition`) VALUES
+
+
+-- --------------------------------------------------------
+
+
+INSERT INTO `measure_level` (`id`, `level`, `description`, `definition`) VALUES
 (1, 'Niveau 0', 'Il n\'y a pas de mesure dissuasive pour ce scénario', ''),
 (2, 'Niveau 1', 'L’effet dissuasif est très faible. ', 'L\'auteur peut logiquement penser qu\'il n\'encourrait aucun risque personnel : il peut penser qu\'il ne serait pas identifié ou qu\'il aurait de très sérieux arguments pour réfuter toute imputation de l\'action ou que les sanctions seraient très faibles.'),
 (3, 'Niveau 2', 'L’effet dissuasif est moyen.', 'L\'auteur peut logiquement penser qu\'il encourrait un risque faible et qu\'en tout état de cause les préjudices personnels qu\'il aurait à subir resteraient supportables.'),
 (4, 'Niveau 3', 'L’effet dissuasif est important.', 'Un auteur rationnel devrait logiquement penser qu\'il encourt un risque important: il devrait savoir qu\'il serait sans doute identifié et que les préjudices qu\'il aurait à subir seraient graves.'),
 (5, 'Niveau 4', 'L’effet dissuasif est très important.', 'Un auteur rationnel devrait logiquement abandonner toute idée d\'action. Il devrait savoir qu\'il sera presque certainement démasqué et que les sanctions encourues sont hors de proportion avec le gain espéré.');
+
+-- --------------------------------------------------------
+
+
+
+-- --------------------------------------------------------
+
+
 
 
 INSERT INTO `primary_actif` (`id`, `code`, `description`, `complementary_description`, `actif_type`, `impact_level`) VALUES
@@ -46,9 +62,12 @@ INSERT INTO `primary_actif` (`id`, `code`, `description`, `complementary_descrip
 (12, 'P02', 'Processus de gouvernance et de prise de décision ', 'dans la gouvernance de l’entité (pouvant conduire à un dysfonctionnement redouté) y compris la gouvernance de la sécurité', 'Processus de management et de gestion', NULL);
 
 
+
+
+
 INSERT INTO `support_actif` (`id`, `name`, `type`, `element`, `selection`) VALUES
-(1, 'Fic', 'Fichier ou base de données ', '\"Eléménts immatériels de type \"\"données\"\"\"', NULL),
-(2, 'Det', 'Données en transit', '\"Eléménts immatériels de type \"\"données\"\"\"', NULL),
+(1, 'Fic', 'Fichier ou base de données ', '\"Eléménts immatériels de type \"\"données\"\"\"', 1),
+(2, 'Det', 'Données en transit', '\"Eléménts immatériels de type \"\"données\"\"\"', 1),
 (3, 'Coe', 'Courriel en transit', '\"Eléménts immatériels de type \"\"données\"\"\"', NULL),
 (4, 'Med', 'Media support de données', 'Eléments matériels supports de données (ou d\'information)', NULL),
 (5, 'Doc', 'Document', 'Eléments matériels supports de données (ou d\'information)', NULL),
@@ -61,12 +80,11 @@ INSERT INTO `support_actif` (`id`, `name`, `type`, `element`, `selection`) VALUE
 (12, 'Iml', 'Infrastructure matérielle et logicielle support de services externalisés', '\"Eléments mixtes de type \"\"services\"\"\"', NULL),
 (13, 'Pro', ' Procédure support des processus', '\"Eléments immatériels de type \"\"processus\"\"\"', NULL);
 
--- --------------------------------------------------------
 
 
 INSERT INTO `trigger_event` (`id`, `code_type`, `type`, `code`, `event`, `standard_natural_exposure`, `decision_natural_exposure`, `result_natural_exposure`, `comment`, `selection`) VALUES
-(1, 'AB.P', 'Absence de personnel', 'AB.P.Per', 'Absence accidentelle de personnel interne ou de partenaire', 3, 0, 3, '', NULL),
-(2, 'AB.S', 'Absence ou indisponibilité accidentelle de service', 'AB.S.Gen', 'Absence de services généraux : défaillance ou indisponibilité de services généraux ou de servitudes, énergie, climatisation, etc.', 2, 0, 2, '', NULL),
+(1, 'AB.P', 'Absence de personnel', 'AB.P.Per', 'Absence accidentelle de personnel interne ou de partenaire', 3, 0, 3, '', 1),
+(2, 'AB.S', 'Absence ou indisponibilité accidentelle de service', 'AB.S.Gen', 'Absence de services généraux : défaillance ou indisponibilité de services généraux ou de servitudes, énergie, climatisation, etc.', 2, 0, 2, '', 1),
 (3, 'AB.S', 'Absence ou indisponibilité accidentelle de service', 'AB.S.Loc', 'Absence de service : Impossibilité d\'accès aux locaux', 2, 0, 2, '', NULL),
 (4, 'AB.S', 'Absence ou indisponibilité accidentelle de service', 'AB.S.Mat', 'Absence de matériel compatible ou incompatibilité de systèmes', 2, 0, 2, '', NULL),
 (5, 'AB.S', 'Absence ou indisponibilité accidentelle de service', 'AB.S.Ser', 'Absence de service : défaillance ou indisponibilité des services fournis par un prestataire externe', 3, 0, 3, '', NULL),
@@ -97,4 +115,12 @@ INSERT INTO `trigger_event` (`id`, `code_type`, `type`, `code`, `event`, `standa
 (30, 'PR.N', 'Procédures adéquates non appliquées', 'PR.N.Nai', 'Procédures adéquates absentes ou méconnues', 2, 0, 2, '', NULL),
 (31, 'PR.N', 'Procédures adéquates non appliquées', 'PR.N.Nar', 'Conflit non ou mal résolu entre procédures', 2, 0, 2, '', NULL),
 (32, 'PR.N', 'Procédures adéquates non appliquées', 'PR.N.Nav', 'Procédures inappliquées volontairement', 2, 0, 2, '', NULL);
+
+
+
+-- --------------------------------------------------------
+
+
+
+
 

@@ -11,7 +11,6 @@ class DecisionService:
             decision = Decision(
                 decision_result=decision_data["decision_result"],
             )
-            print("decision", decision)
             db.session.add(decision)
             db.session.commit()
             return decision

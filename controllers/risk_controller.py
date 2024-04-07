@@ -4,6 +4,7 @@ from flask import request, jsonify
 
 from controllers.damage_controller import damage_model
 from controllers.decision_controller import decision_model
+from controllers.mesure_controller import measure_model
 from controllers.pimary_actif_controller import primary_actif_model
 from controllers.support_actif_controller import support_actif_model
 from controllers.trigger_controller import trigger_event_model
@@ -23,12 +24,13 @@ risk_model = risk_controller.model('riskk', {
     "residual_impact": fields.Integer(description="residual impact"),
     "comment": fields.String(description="comment"),
     "residual_gravity": fields.Integer(description="residual gravity"),
-    "mesure_id": fields.Integer(default=None,description="mesure id" ),
+    #"measure_id": fields.Integer(default=None,description="measure id" ),
     "support_actif_id": fields.Integer(description="support_actif id"),
     "damage_id": fields.Integer(description="damage id"),
     "primary_actif_id": fields.Integer(description="primary_actif id"),
     "trigger_event_id": fields.Integer(description="trigger_event id"),
     "decision_id": fields.Integer(description="decision id"),
+    "measure": fields.Nested(measure_model),
 
 })
 
@@ -44,12 +46,14 @@ expected_risk_model = risk_controller.model('risk', {
     "residual_impact": fields.Integer(description="residual impact"),
     "comment": fields.String(description="comment"),
     "residual_gravity": fields.Integer(description="residual gravity"),
+    "measure_id": fields.Integer(description="measure"),
 
     "decision": fields.Nested(decision_model),
     "trigger_event": fields.Nested(trigger_event_model),
     "support_actif": fields.Nested(support_actif_model),
     "damage": fields.Nested(damage_model),
     "primary_actif": fields.Nested(primary_actif_model),
+    #"measure": fields.Nested(measure_model),
 
 })
 
@@ -66,12 +70,13 @@ class RiskResource(Resource):
         Create a new Risk.
         """
         risk_data = request.json
-        return RiskService.create_new_risk(risk_data), 201
+        #return RiskService.create_new_risk(risk_data), 201
+        return RiskService.create(risk_data),201
 
     @risk_controller.marshal_list_with(expected_risk_model, code=200, description="Success")
     @risk_controller.response(200, "{'message': 'success}")
     @risk_controller.response(404, "{'message': 'not found}")
-    @jwt_required()
+    #@jwt_required()
     def get(self):
         """
         Get all Risks.
@@ -84,10 +89,9 @@ class RiskResource(Resource):
 @risk_controller.response(500, 'Internal server error')
 class RiskDetailResource(Resource):
     @risk_controller.marshal_with(expected_risk_model, description="get Risk by id")
-    @risk_controller.expect(risk_model)
     @risk_controller.response(200, 'success')
     @risk_controller.response(404, "Risk not found")
-    @jwt_required()
+    #@jwt_required()
     def get(self, risk_id):
         """
         Get details of a specific Risk.

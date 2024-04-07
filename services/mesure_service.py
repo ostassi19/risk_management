@@ -1,65 +1,67 @@
-from models.mesure import Mesure, db
+from models.measure import Measure, db
 from flask import make_response, jsonify
 
-class MesureService:
+
+class MeasureService:
 
     @classmethod
-    def create_mesure(cls, mesure_data):
+    def create_measure(cls, measure_data):
         try:
-            mesure = Mesure(
-                level=mesure_data["level"],
-                measure=mesure_data["measure"],
+            measure = Measure(
+                measure=measure_data["measure"],
+                type=measure_data["type"],
+                measure_level_id=measure_data["measure_level_id"],
             )
-            db.session.add(mesure)
+            db.session.add(measure)
             db.session.commit()
-            return 200, mesure
+            return 200, measure.id, measure
         except Exception as e:
-            return make_response(jsonify({'message': 'Error creating mesure'}), 500)
+            return make_response(jsonify({'message': 'Error creating measure'}), 500)
 
     @classmethod
-    def get_all_mesures(cls):
+    def get_all_measures(cls):
         try:
-            mesures = Mesure.query.all()
-            return mesures, 200
+            measures = Measure.query.all()
+            return measures, 200
         except Exception as e:
-            return make_response(jsonify({'message': 'Error getting mesures'}), 500)
+            return make_response(jsonify({'message': 'Error getting measures'}), 500)
 
     @classmethod
-    def get_mesure_by_id(cls, mesure_id):
+    def get_measure_by_id(cls, measure_id):
         try:
-            mesure = Mesure.query.filter_by(id=mesure_id).first()
-            if not mesure:
-                return jsonify({'error': 'Mesure not found'})
+            measure = Measure.query.filter_by(id=measure_id).first()
+            if not measure:
+                return jsonify({'error': 'Measure not found'})
             else:
-                return mesure, 200
+                return measure, 200
         except Exception as e:
-            return make_response(jsonify({'message': 'Error getting mesure'}), 500)
+            return make_response(jsonify({'message': 'Error getting measure'}), 500)
 
     @classmethod
-    def update_mesure(cls, mesure_id, mesure_data):
+    def update_measure(cls, measure_id, measure_data):
         try:
-            mesure = Mesure.query.filter_by(id=mesure_id).first()
-            if not mesure:
-                return jsonify({'error': 'Mesure not found'})
+            measure = Measure.query.filter_by(id=measure_id).first()
+            if not measure:
+                return jsonify({'error': 'Measure not found'})
 
-            for key, value in mesure_data.items():
-                setattr(mesure, key, value)
+            for key, value in measure_data.items():
+                setattr(measure, key, value)
             db.session.commit()
 
-            updated_mesure = Mesure.query.get(mesure_id)
+            updated_mesure = Measure.query.get(measure_id)
             return updated_mesure, 200
         except Exception as e:
-            return make_response(jsonify({'message': 'Error updating mesure'}), 500)
+            return make_response(jsonify({'message': 'Error updating measure'}), 500)
 
     @classmethod
-    def delete_mesure(cls, mesure_id):
+    def delete_measure(cls, measure_id):
         try:
-            mesure = Mesure.query.get(mesure_id)
-            if not mesure:
-                return jsonify({'error': 'Mesure not found'})
+            measure = Measure.query.get(measure_id)
+            if not measure:
+                return jsonify({'error': 'Measure not found'})
             else:
-                db.session.delete(mesure)
+                db.session.delete(measure)
                 db.session.commit()
-                return {'message': f'Mesure with Id {mesure_id} deleted successfully'}, 200
+                return {'message': f'Measure with Id {measure_id} deleted successfully'}, 200
         except Exception as e:
-            return make_response(jsonify({'message': 'Error deleting mesure'}), 500)
+            return make_response(jsonify({'message': 'Error deleting measure'}), 500)

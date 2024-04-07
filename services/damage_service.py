@@ -16,7 +16,6 @@ class DamageService:
                 comment=damage_data["comment"],
                 selection=damage_data["selection"],
             )
-            print("damage", damage)
             db.session.add(damage)
             db.session.commit()
             return damage

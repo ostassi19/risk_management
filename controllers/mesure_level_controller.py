@@ -18,7 +18,7 @@ class DecisionResource(Resource):
     @mesure_level_controller.marshal_with(mesure_level_model, description="MesureLevel created successfully")
     @mesure_level_controller.expect(mesure_level_model)
     @mesure_level_controller.response(201, "{'message': 'mesureLevel registered ")
-    @jwt_required()
+    #@jwt_required()
     def post(self):
         """
         Create a new mesureLevel.
@@ -29,7 +29,7 @@ class DecisionResource(Resource):
     @mesure_level_controller.marshal_list_with(mesure_level_model, code=200, description="Success")
     @mesure_level_controller.response(200, "{'message': 'success ")
     @mesure_level_controller.response(404, "{'message': 'not found ")
-    @jwt_required()
+    #@jwt_required()
     def get(self):
         """
         Get all decisions.
@@ -43,7 +43,7 @@ class MesureLevelDetailResource(Resource):
     @mesure_level_controller.marshal_with(mesure_level_model, description="get mesure level by id")
     @mesure_level_controller.response(200, 'success')
     @mesure_level_controller.response(404, "Mesure level not found")
-    @jwt_required()
+    #@jwt_required()
     def get(self, mesure_level_id):
         """
         Get details of a specific mesure_level.
@@ -57,7 +57,7 @@ class MesureLevelDetailResource(Resource):
     @mesure_level_controller.response(404, "Mesure level not found")
     @mesure_level_controller.response(200, 'success')
     @mesure_level_controller.expect(mesure_level_model)
-    @jwt_required()
+    #@jwt_required()
     def put(self, mesure_level_id):
         """
         Update details of a specific mesure_level.
@@ -70,7 +70,7 @@ class MesureLevelDetailResource(Resource):
 
     @mesure_level_controller.marshal_with(mesure_level_model, code=200, description="Success")
     @mesure_level_controller.response(404, "mesure level not found")
-    @jwt_required()
+    #@jwt_required()
     def delete(self, mesure_level_id):
         """
         Delete a specific decision.

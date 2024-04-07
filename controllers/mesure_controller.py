@@ -2,84 +2,84 @@ from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 
-from controllers.mesure_level_controller import mesure_level_model
-from services.mesure_service import MesureService
+from services.mesure_service import MeasureService
 
-mesure_controller = Namespace('mesure', description='Mesure entity')
+measure_controller = Namespace('measure', description='Measure entity')
 
-# Adjust the model fields based on the updated Mesure entity
-mesure_model = mesure_controller.model('mesure', {
+# Adjust the model fields based on the updated measure entity
+measure_model = measure_controller.model('measure', {
     "id": fields.Integer(readonly=True, description="identifier"),
     "measure": fields.String(required=True, description="measure"),
-    "type": fields.String(required=True, description="mesure type"),
-    #"level": fields.Nested(mesure_level_model,required=False)
-    # Add fields specific to each mesure type as needed
+    "type": fields.String(required=True, description="measure type"),
+    "measure_level_id": fields.Integer(description="measure_level id"),
 })
 
-@mesure_controller.route('/')
-@mesure_controller.response(500, 'Internal server error')
-class MesureResource(Resource):
-    @mesure_controller.marshal_with(mesure_model, description="Mesure created successfully")
-    @mesure_controller.expect(mesure_model)
-    @mesure_controller.response(201, "{'message': 'mesure registered ")
-    @jwt_required()
+
+@measure_controller.route('/')
+@measure_controller.response(500, 'Internal server error')
+class MeasureResource(Resource):
+    @measure_controller.marshal_with(measure_model, description="measure created successfully")
+    @measure_controller.expect(measure_model)
+    @measure_controller.response(201, "{'message': 'measure registered ")
+    # @jwt_required()
     def post(self):
         """
-        Create a new mesure.
+        Create a new measure.
         """
-        mesure_data = request.json
-        return MesureService.create_mesure(mesure_data), 201
+        measure_data = request.json
+        return MeasureService.create_measure(measure_data), 201
 
-    @mesure_controller.marshal_list_with(mesure_model, code=200, description="Success")
-    @mesure_controller.response(200, "{'message': 'success ")
-    @mesure_controller.response(404, "{'message': 'not found ")
-    @jwt_required()
+    @measure_controller.marshal_list_with(measure_model, code=200, description="Success")
+    @measure_controller.response(200, "{'message': 'success ")
+    @measure_controller.response(404, "{'message': 'not found ")
+    # @jwt_required()
     def get(self):
         """
-        Get all mesures.
+        Get all measures.
         """
-        return MesureService.get_all_mesures()
+        return MeasureService.get_all_measures()
 
-@mesure_controller.route('/<int:mesure_id>')
-@mesure_controller.param('mesure_id', 'the mesure identifier')
-@mesure_controller.response(500, 'Internal server error')
-class MesureDetailResource(Resource):
-    @mesure_controller.marshal_with(mesure_model, description="get mesure by id")
-    @mesure_controller.response(200, 'success')
-    @mesure_controller.response(404, "Mesure not found")
-    @jwt_required()
-    def get(self, mesure_id):
-        """
-        Get details of a specific mesure.
-        """
-        mesure = MesureService.get_mesure_by_id(mesure_id)
-        if mesure:
-            return mesure
-        return {"message": "Mesure not found"}, 404
 
-    @mesure_controller.marshal_with(mesure_model, description="update mesure")
-    @mesure_controller.response(404, "Mesure not found")
-    @mesure_controller.response(200, 'success')
-    @mesure_controller.expect(mesure_model)
-    @jwt_required()
-    def put(self, mesure_id):
+@measure_controller.route('/<int:measure_id>')
+@measure_controller.param('measure_id', 'the measure identifier')
+@measure_controller.response(500, 'Internal server error')
+class MeasureDetailResource(Resource):
+    @measure_controller.marshal_with(measure_model, description="get measure by id")
+    @measure_controller.response(200, 'success')
+    @measure_controller.response(404, "Measure not found")
+    # @jwt_required()
+    def get(self, measure_id):
         """
-        Update details of a specific mesure.
+        Get details of a specific measure.
         """
-        mesure_data = request.json
-        updated_mesure = MesureService.update_mesure(mesure_id, mesure_data)
-        if updated_mesure:
-            return updated_mesure
-        return {"message": "Mesure not found"}, 404
+        measure = MeasureService.get_measure_by_id(measure_id)
+        if measure:
+            return measure
+        return {"message": "measure not found"}, 404
 
-    @mesure_controller.marshal_with(mesure_model, code=200, description="Success")
-    @mesure_controller.response(404, "Mesure not found")
-    @jwt_required()
-    def delete(self, mesure_id):
+    @measure_controller.marshal_with(measure_model, description="update measure")
+    @measure_controller.response(404, "Measure not found")
+    @measure_controller.response(200, 'success')
+    @measure_controller.expect(measure_model)
+    # @jwt_required()
+    def put(self, measure_id):
         """
-        Delete a specific mesure.
+        Update details of a specific measure.
         """
-        deleted_mesure = MesureService.delete_mesure(mesure_id)
-        if deleted_mesure:
-            return deleted_mesure
-        return {"message": "Mesure not found"}, 404
+        measure_data = request.json
+        updated_measure = MeasureService.update_measure(measure_id, measure_data)
+        if updated_measure:
+            return updated_measure
+        return {"message": "Measure not found"}, 404
+
+    @measure_controller.marshal_with(measure_model, code=200, description="Success")
+    @measure_controller.response(404, "measure not found")
+    # @jwt_required()
+    def delete(self, measure_id):
+        """
+        Delete a specific measure.
+        """
+        deleted_measure = MeasureService.delete_measure(measure_id)
+        if deleted_measure:
+            return deleted_measure
+        return {"message": "Measure not found"}, 404
