@@ -118,7 +118,7 @@ class RiskDetailResource(Resource):
 
     @risk_controller.marshal_with(risk_model, code=200, description="Success")
     @risk_controller.response(404, "Risk not found")
-    @jwt_required()
+    #@jwt_required()
     def delete(self, risk_id):
         """
         Delete a specific Risk.

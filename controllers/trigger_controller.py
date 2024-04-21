@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 from flask import request, jsonify
 from services.trigger_event_service import TriggerEventService
@@ -34,6 +35,7 @@ class TriggerEventResource(Resource):
     @trigger_event_controller.marshal_list_with(trigger_event_model, code=200, description="Success")
     @trigger_event_controller.response(200, "{'message': 'success}")
     @trigger_event_controller.response(404, "{'message': 'not found}")
+    @jwt_required()
     def get(self):
         """
         Get all Trigger Events.
@@ -80,3 +82,5 @@ class TriggerEventDetailResource(Resource):
         if deleted_trigger_event:
             return deleted_trigger_event
         return {"message": "Trigger Event not found"}, 404
+
+

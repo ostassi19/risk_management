@@ -26,8 +26,8 @@ api = Api(api_v1,
           )
 
 api.add_namespace(risk_controller)
-api.add_namespace(damage_controller)
 api.add_namespace(trigger_event_controller)
+api.add_namespace(damage_controller)
 api.add_namespace(measure_controller)
 api.add_namespace(support_actif_controller)
 api.add_namespace(primary_actif_controller)
