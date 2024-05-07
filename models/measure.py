@@ -15,7 +15,8 @@ class Measure(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     measure = db.Column(db.Text, nullable=True)
     # One-to-Many relationship with Measure
-    risks = db.relationship('Risk', backref='measures', lazy=True)
+
+    risk_id = db.Column(db.Integer, db.ForeignKey('risk.id'), nullable=True)
     type = db.Column(db.Enum(MESURETYPEEnum), nullable=True)
 
     measure_level_id = db.Column(db.Integer, db.ForeignKey('measure_level.id'), nullable=True)

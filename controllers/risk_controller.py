@@ -30,7 +30,7 @@ risk_model = risk_controller.model('riskk', {
     "primary_actif_id": fields.Integer(description="primary_actif id"),
     "trigger_event_id": fields.Integer(description="trigger_event id"),
     "decision_id": fields.Integer(description="decision id"),
-    "measure": fields.Nested(measure_model),
+    "measures": fields.List(fields.Nested(measure_model),required=False, description="measure list"),
 
 })
 

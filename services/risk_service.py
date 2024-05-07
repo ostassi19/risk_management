@@ -77,7 +77,10 @@ class RiskService:
                 risk_data["intrinsic_impact"] and risk_data["intrinsic_potential"] else 0
             gravity_residual = calcul_gravity(risk_data["residual_impact"], risk_data["residual_potential"]) if \
                 risk_data["intrinsic_impact"] and risk_data["intrinsic_potential"] else 0
-            measure = MeasureService.create_measure(risk_data["measure"])
+            measures = []
+            for measure in risk_data["measures"]:
+                measureObject = MeasureService.create_measure(measure)
+                measures.append(measureObject[2])
             risk = Risk(
                 consequence_type=risk_data["consequence_type"],
                 intrinsic_impact=risk_data["intrinsic_impact"],
@@ -89,7 +92,8 @@ class RiskService:
                 residual_impact=risk_data["residual_impact"],
                 comment=risk_data["comment"],
                 residual_gravity=gravity_residual,
-                measure_id=measure[1],
+
+                mesures=measures,
                 support_actif_id=risk_data["support_actif_id"],
                 damage_id=risk_data["damage_id"],
                 primary_actif_id=risk_data["primary_actif_id"],
@@ -112,7 +116,6 @@ class RiskService:
                 damage = DamageService.get_damage_by_id(risk_data["damage_id"])
                 setattr(damage[0], "selection", True)
                 db.session.commit()
-
             return risk, 201
         except Exception as e:
             traceback.print_exc()  # Print the traceback
